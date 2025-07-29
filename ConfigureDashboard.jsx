@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Typography, Paper, Switch, FormControlLabel } from '@mui/material';
+import { useSectionVisibility } from './SectionVisibilityContext';
 
 const ConfigureDashboard = () => {
-  const [showStats, setShowStats] = useState(true);
-  const [showAlerts, setShowAlerts] = useState(true);
+  const { showStats, setShowStats, showAlerts, setShowAlerts } = useSectionVisibility();
 
   return (
     <Paper sx={{ p: 3 }}>
@@ -16,7 +16,6 @@ const ConfigureDashboard = () => {
         control={<Switch checked={showAlerts} onChange={() => setShowAlerts(!showAlerts)} />}
         label="Afficher les alertes"
       />
-      {/* Ajoute d'autres options selon besoins */}
     </Paper>
   );
 };
