@@ -8,6 +8,7 @@ import ForgetPassword from './components/ForgetPassword';
 import MainApp from './MainApp';
 import { auth } from './firebase';
 import { onAuthStateChanged } from 'firebase/auth';
+import { SectionVisibilityProvider } from './components/UserActivities/SectionVisibilityContext';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -32,35 +33,36 @@ function App() {
 
   return (
     <Router>
-      <Routes>
-        <Route path="/reset-password" element={<ResetPassword />} />
-        {/* Redirige vers /mainapp si déjà connecté */}
-        <Route
-          path="/signin"
-          element={isAuthenticated ? <Navigate to="/mainapp" /> : <SignIn />}
-        />
-        <Route
-          path="/signup"
-          element={isAuthenticated ? <Navigate to="/mainapp" /> : <SignUp />}
-        />
-        <Route
-          path="/forget-password"
-          element={isAuthenticated ? <Navigate to="/mainapp" /> : <ForgetPassword />}
-        />
-        <Route
-          path="/"
-          element={isAuthenticated ? <Navigate to="/mainapp" /> : <SignIn />}
-        />
-        <Route
-          path="/mainapp"
-          element={isAuthenticated ? <MainApp /> : <Navigate to="/signin" />}
-        />
+      <SectionVisibilityProvider>
+        <Routes>
+          <Route path="/reset-password" element={<ResetPassword />} />
+          <Route
+            path="/signin"
+            element={isAuthenticated ? <Navigate to="/mainapp" /> : <SignIn />}
+          />
+          <Route
+            path="/signup"
+            element={isAuthenticated ? <Navigate to="/mainapp" /> : <SignUp />}
+          />
+          <Route
+            path="/forget-password"
+            element={isAuthenticated ? <Navigate to="/mainapp" /> : <ForgetPassword />}
+          />
+          <Route
+            path="/"
+            element={isAuthenticated ? <Navigate to="/mainapp" /> : <SignIn />}
+          />
+          <Route
+            path="/mainapp"
+            element={isAuthenticated ? <MainApp /> : <Navigate to="/signin" />}
+          />
           <Route
             path="/uploader"
             element={isAuthenticated ? <Uploader /> : <Navigate to="/signin" />}
-        />
-        <Route path="*" element={<Navigate to="/signin" replace />} />
-      </Routes>  
+          />
+          <Route path="*" element={<Navigate to="/signin" replace />} />
+        </Routes>
+      </SectionVisibilityProvider>
     </Router>
   );
 }
